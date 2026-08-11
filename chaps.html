@@ -3,6 +3,47 @@
 <head>
     <title>Chaps Keeper List</title>
     <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* ESPN-style dark table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #262626;
+            color: #00ff99;
+            padding: 12px;
+            font-size: 18px;
+            text-align: left;
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            padding: 10px;
+            color: #e6e6e6;
+            border-bottom: 1px solid #333;
+        }
+
+        tr:nth-child(even) {
+            background: #141414;
+        }
+
+        tr:hover {
+            background: #2a2a2a;
+        }
+
+        .table-container {
+            padding: 20px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -12,19 +53,8 @@
         <p class="subtitle">2025 Season</p>
     </header>
 
-    <!-- GOOGLE SHEETS EMBED -->
-    <section style="padding: 20px; text-align: center;">
-        <iframe 
-            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2z9HhUUoPgJDk7T6uGKQIveFn912gnaieysP3Zy_JV2MAuO5HEvv4ag_7c6Y0eEGzJNoGRyzqML_f/pubhtml?gid=5066229&single=true"
-            width="100%"
-            height="800px"
-            style="border: 1px solid #333; border-radius: 10px;">
-        </iframe>
-    </section>
-
-    <!-- NAVIGATION -->
+    <!-- BUTTON GRID -->
     <section class="team-grid">
-
         <a class="team-card" href="index.html"><div class="team-name">Home</div></a>
         <a class="team-card" href="varo.html"><div class="team-name">Varo</div></a>
         <a class="team-card" href="amir.html"><div class="team-name">Amir</div></a>
@@ -37,12 +67,57 @@
         <a class="team-card" href="yeyo.html"><div class="team-name">Yeyo</div></a>
         <a class="team-card" href="callo.html"><div class="team-name">Callo</div></a>
         <a class="team-card" href="rooney.html"><div class="team-name">Rooney</div></a>
-
     </section>
+
+    <!-- ESPN TABLE -->
+    <div class="table-container">
+        <table id="keeperTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
 
     <footer>
         <p>© 2025 Camarada's Fantasy Football League</p>
     </footer>
+
+    <!-- CSV LOADER -->
+    <script>
+        async function loadCSV() {
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2z9HhUUoPgJDk7T6uGKQIveFn912gnaieysP3Zy_JV2MAuO5HEvv4ag_7c6Y0eEGzJNoGRyzqML_f/pub?gid=5066229&single=true&output=csv";
+
+            const response = await fetch(url);
+            const csvText = await response.text();
+
+            const rows = csvText.split("\n").map(r => r.split(","));
+
+            const headerRow = rows[0];
+            const bodyRows = rows.slice(1);
+
+            // Build header
+            let headHTML = "<tr>";
+            headerRow.forEach(col => {
+                headHTML += `<th>${col.trim()}</th>`;
+            });
+            headHTML += "</tr>";
+            document.getElementById("tableHead").innerHTML = headHTML;
+
+            // Build body
+            let bodyHTML = "";
+            bodyRows.forEach(row => {
+                if (row.length > 1) {
+                    bodyHTML += "<tr>";
+                    row.forEach(col => {
+                        bodyHTML += `<td>${col.trim()}</td>`;
+                    });
+                    bodyHTML += "</tr>";
+                }
+            });
+            document.getElementById("tableBody").innerHTML = bodyHTML;
+        }
+
+        loadCSV();
+    </script>
 
 </body>
 </html>
