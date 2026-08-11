@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Winnie Keeper List</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* ESPN-style dark table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #262626;
+            color: #00ff99;
+            padding: 12px;
+            font-size: 18px;
+            text-align: left;
+            border-bottom: 2px solid #333;
+        }
+
+        td {
+            padding: 10px;
+            color: #e6e6e6;
+            border-bottom: 1px solid #333;
+        }
+
+        tr:nth-child(even) {
+            background: #141414;
+        }
+
+        tr:hover {
+            background: #2a2a2a;
+        }
+
+        .table-container {
+            padding: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="hero">
+        <h1>Winnie Keeper List</h1>
+        <p class="subtitle">2026 Season</p>
+    </header>
+
+    <!-- BUTTON GRID -->
+    <section class="team-grid">
+        <a class="team-card" href="index.html"><div class="team-name">Home</div></a>
+        <a class="team-card" href="chaps.html"><div class="team-name">Chaps</div></a>
+        <a class="team-card" href="varo.html"><div class="team-name">Varo</div></a>
+        <a class="team-card" href="amir.html"><div class="team-name">Amir</div></a>
+        <a class="team-card" href="isaias.html"><div class="team-name">Isaias</div></a>
+        <a class="team-card" href="lopez.html"><div class="team-name">Lopez</div></a>
+        <a class="team-card" href="felipe.html"><div class="team-name">Felipe</div></a>
+        <a class="team-card" href="pepe.html"><div class="team-name">Pepe</div></a>
+        <a class="team-card" href="paco.html"><div class="team-name">Paco</div></a>
+        <a class="team-card" href="yeyo.html"><div class="team-name">Yeyo</div></a>
+        <a class="team-card" href="callo.html"><div class="team-name">Callo</div></a>
+        <a class="team-card" href="rooney.html"><div class="team-name">Rooney</div></a>
+    </section>
+
+    <!-- ESPN TABLE -->
+    <div class="table-container">
+        <table id="keeperTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>© 2026 Camarada's Fantasy Football League</p>
+    </footer>
+
+    <!-- CSV LOADER -->
+    <script>
+        async function loadCSV() {
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2z9HhUUoPgJDk7T6uGKQIveFn912gnaieysP3Zy_JV2MAuO5HEvv4ag_7c6Y0eEGzJNoGRyzqML_f/pub?gid=1087803715&single=true&output=csv";
+
+            const response = await fetch(url);
+            const csvText = await response.text();
+
+            const rows = csvText.split("\n").map(r => r.split(","));
+
+            const headerRow = rows[0].slice(0, 4);  // ⭐ Only columns A–D
+            const bodyRows = rows.slice(1).slice(0, 29);  // ⭐ First 29 rows
+
+            // Build header
+            let headHTML = "<tr>";
+            headerRow.forEach(col => {
+                headHTML += `<th>${col.trim()}</th>`;
+            });
+            headHTML += "</tr>";
+            document.getElementById("tableHead").innerHTML = headHTML;
+
+            // Build body
+            let bodyHTML = "";
+            bodyRows.forEach(row => {
+
+                const sliced = row.slice(0, 4);  // ⭐ Only columns A–D
+
+                // ⭐ Skip row if ALL 4 columns are empty
+                const hasData = sliced.some(col => col.trim() !== "");
+                if (!hasData) return;
+
+                bodyHTML += "<tr>";
+                sliced.forEach(col => {
+                    bodyHTML += `<td>${col.trim()}</td>`;
+                });
+                bodyHTML += "</tr>";
+            });
+
+            document.getElementById("tableBody").innerHTML = bodyHTML;
+        }
+
+        loadCSV();
+    </script>
+
+</body>
+</html>
