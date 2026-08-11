@@ -92,7 +92,7 @@
             const rows = csvText.split("\n").map(r => r.split(","));
 
             const headerRow = rows[0];
-            const bodyRows = rows.slice(1).slice(0, 29);  // ⭐ LIMIT TO FIRST 30 ROWS
+            const bodyRows = rows.slice(1).slice(0, 29);  // ⭐ FIRST 29 ROWS ONLY
 
             // Build header
             let headHTML = "<tr>";
@@ -105,14 +105,18 @@
             // Build body
             let bodyHTML = "";
             bodyRows.forEach(row => {
-                if (row.length > 1) {
-                    bodyHTML += "<tr>";
-                    row.forEach(col => {
-                        bodyHTML += `<td>${col.trim()}</td>`;
-                    });
-                    bodyHTML += "</tr>";
-                }
+
+                // ⭐ Skip row if ALL columns are empty
+                const hasData = row.some(col => col.trim() !== "");
+                if (!hasData) return;
+
+                bodyHTML += "<tr>";
+                row.forEach(col => {
+                    bodyHTML += `<td>${col.trim()}</td>`;
+                });
+                bodyHTML += "</tr>";
             });
+
             document.getElementById("tableBody").innerHTML = bodyHTML;
         }
 
