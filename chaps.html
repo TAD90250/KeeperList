@@ -92,7 +92,7 @@
             const rows = csvText.split("\n").map(r => r.split(","));
 
             const headerRow = rows[0];
-            const bodyRows = rows.slice(1);
+            const bodyRows = rows.slice(1).slice(0, 30);  // ⭐ LIMIT TO FIRST 30 ROWS
 
             // Build header
             let headHTML = "<tr>";
