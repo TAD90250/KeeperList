@@ -5,88 +5,40 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        :root {
-            --rams-blue: #003594;
-            --rams-gold: #ffd100;
-            --rams-white: #ffffff;
-        }
-
-        body { background: var(--rams-blue); color: var(--rams-white); }
+        :root { --rams-blue:#003594; --rams-gold:#ffd100; --rams-white:#ffffff; }
+        body { background:var(--rams-blue); color:var(--rams-white); }
 
         .hero {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(180deg,#003594 0%,#001a4d 100%);
-            border-bottom: 4px solid var(--rams-gold);
+            text-align:center; padding:40px 20px;
+            background:linear-gradient(180deg,#003594 0%,#001a4d 100%);
+            border-bottom:4px solid var(--rams-gold);
         }
-
-        .hero h1 {
-            font-size: 48px;
-            color: var(--rams-gold);
-            text-shadow: 0 0 10px rgba(255,209,0,0.6);
-        }
-
-        .subtitle { font-size: 22px; margin-top: 10px; }
+        .hero h1 { font-size:48px; color:var(--rams-gold); text-shadow:0 0 10px rgba(255,209,0,.6); }
+        .subtitle { font-size:22px; margin-top:10px; }
 
         .button-row {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 20px;
-            white-space: nowrap;
+            display:flex; overflow-x:auto; gap:12px; padding:20px; white-space:nowrap;
         }
-
         .team-card {
-            background:#001a4d;
-            border:2px solid var(--rams-gold);
-            border-radius:10px;
-            padding:15px 25px;
-            color:var(--rams-white);
-            font-size:18px;
-            font-weight:bold;
-            flex:0 0 auto;
-            transition:.2s;
+            background:#001a4d; border:2px solid var(--rams-gold);
+            border-radius:10px; padding:15px 25px; color:var(--rams-white);
+            font-size:18px; font-weight:bold; flex:0 0 auto; transition:.2s;
         }
-
-        .team-card:hover {
-            background:var(--rams-gold);
-            color:#003594;
-            transform:scale(1.05);
-        }
+        .team-card:hover { background:var(--rams-gold); color:#003594; transform:scale(1.05); }
 
         table {
-            width:100%;
-            border-collapse:collapse;
-            margin-top:30px;
-            background:#1a1a1a;
-            border:1px solid #333;
-            border-radius:10px;
-            overflow:hidden;
+            width:100%; border-collapse:collapse; margin-top:30px;
+            background:#1a1a1a; border:1px solid #333; border-radius:10px; overflow:hidden;
         }
-
-        th {
-            background:#262626;
-            color:#00ff99;
-            padding:12px;
-            font-size:18px;
-            border-bottom:2px solid #333;
-        }
-
-        td {
-            padding:10px;
-            color:#e6e6e6;
-            border-bottom:1px solid #333;
-        }
-
+        th { background:#262626; color:#00ff99; padding:12px; font-size:18px; border-bottom:2px solid #333; }
+        td { padding:10px; color:#e6e6e6; border-bottom:1px solid #333; }
         tr:nth-child(even){ background:#141414; }
         tr:hover{ background:#2a2a2a; }
 
         .table-container{ padding:20px; }
 
         footer {
-            text-align:center;
-            padding:20px;
-            margin-top:40px;
+            text-align:center; padding:20px; margin-top:40px;
             border-top:2px solid var(--rams-gold);
         }
     </style>
@@ -143,4 +95,17 @@ async function loadCSV() {
     bodyRows.forEach(row=>{
         const sliced=row.slice(0,4);
         const hasData=sliced.some(col=>col.trim()!=="");
-        if(!hasData) return
+        if(!hasData) return;
+
+        bodyHTML+="<tr>";
+        sliced.forEach(col=>bodyHTML+=`<td>${col.trim()}</td>`);
+        bodyHTML+="</tr>";
+    });
+
+    document.getElementById("tableBody").innerHTML=bodyHTML;
+}
+loadCSV();
+</script>
+
+</body>
+</html>
